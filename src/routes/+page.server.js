@@ -1,4 +1,13 @@
 import { fail, redirect } from '@sveltejs/kit';
+import { env } from '$env/dynamic/private';
+
+const api = env.API_URL;
+
+export const load = () => {
+	return {
+		api
+	};
+};
 
 export const actions = {
 	login: async ({ request, cookies }) => {
@@ -8,7 +17,7 @@ export const actions = {
 		if (!username) return fail(400, { path: 'username', missing: true });
 		if (!password) return fail(400, { path: 'password', missing: true });
 
-		const response = await fetch('http://localhost:3003/api/signin', {
+		const response = await fetch(`${api}/api/signin`, {
 			mode: 'cors',
 			method: 'post',
 			headers: {
